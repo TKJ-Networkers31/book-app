@@ -4,9 +4,9 @@ services:
     container_name: postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: username
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: booktracker_prod
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U username -d booktracker_prod"]
       interval: 10s
@@ -20,7 +20,7 @@ services:
     container_name: backend
     restart: unless-stopped
     ports:
-      - "5001:5001"
+      - "${PORT_HOST}:${PORT_APP}"
     depends_on:
       postgres:
         condition: service_healthy
