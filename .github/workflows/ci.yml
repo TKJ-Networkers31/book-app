@@ -16,4 +16,4 @@ jobs:
     - name: coba build image
       run: |
         cd ./backend
-        docker compose up --build -d
+        docker compose up -d
