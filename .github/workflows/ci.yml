@@ -11,9 +11,7 @@ jobs:
 
     steps:
     - name: Ambil kode dari repository (Checkout)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: coba build image
-      run: |
-        cd ./backend
-        docker compose up -d
+      run: docker compose -f ./backend/docker-compose.yml up --build -d
