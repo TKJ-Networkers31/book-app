@@ -107,7 +107,8 @@ docker run -d \
   -v postgres_local_data:/var/lib/postgresql/data \
   --restart unless-stopped \
   postgres:16
-Langkah C: Jalankan Kontainer Aplikasi Backend (Flask)
+
+- Langkah C: Jalankan Kontainer Aplikasi Backend (Flask)
 Nyalakan aplikasi backend, hubungkan ke network yang sama, arahkan portnya, dan arahkan DATABASE_URL ke nama kontainer database (postgres-local):
 
 Bash
@@ -121,7 +122,7 @@ docker run -d \
   book-backend:local
 
 ## 🛑 Cara Mematikan dan Menghapus Kontainer Lokal
-Jika proses pengujian lokal sudah selesai dan kamu ingin membersihkan kontainer yang berjalan:
+Jika proses pengujian lokal sudah selesai dan ingin membersihkan kontainer yang berjalan:
 
 Bash
 # Menghentikan kontainer
