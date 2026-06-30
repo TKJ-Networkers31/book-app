@@ -1,0 +1,22 @@
+name: check automation
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  cek-docker-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ambil kode dari repository (Checkout)
+      uses: actions/checkout@v4
+
+    - name: coba build image
+      run: docker image build -t . projek-app
+
+    - name: Jalankan Hadolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        dockerfile: ./backend/Dockerfile

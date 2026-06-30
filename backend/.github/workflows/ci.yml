@@ -1,0 +1,17 @@
+name: check with github action
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  cek-docker-image:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Ambil kode dari repository (Checkout)
+      uses: actions/checkout@v4
+
+    - name: coba build image
+      run: docker compose up --build -d

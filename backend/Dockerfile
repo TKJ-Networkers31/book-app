@@ -1,34 +1,41 @@
-# Gunakan image dasar Python
-FROM python:3.11-slim
+# Stage 1 : Builder
+FROM python:3.11-slim AS builder
 
-# Instal dependensi sistem yang diperlukan (build dependencies)
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
-  libpq-dev \
-  python3-dev \
-  default-libmysqlclient-dev \
-  build-essential \
-  pkg-config \
-  cron \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    python3-dev \
+    default-libmysqlclient-dev \
+    libpq-dev \
+    pkg-config \
+ && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
-ENV TZ=Asia/Jakarta
-
-# create workdir
 WORKDIR /app
 
-# Copy all to workdir
-COPY ./requirements.txt ./
+# Install Python packages
+COPY requirements.txt .
 
-# Perbarui pip dan install dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r /app/requirements.txt --verbose
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Copy all files
+# Stage 2 : Runtime
+FROM python:3.11-slim
+
+ENV TZ=Asia/Jakarta
+
+WORKDIR /app
+
+# Copy Python packages dari builder
+COPY --from=builder /usr/local/lib/python3.11 /usr/local/lib/python3.11
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy source code
 COPY . .
 
-# Expose Port
+RUN apt-get update && apt-get install curl -y && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 5001
 
-# Start app.py
-CMD ["python", "app.py"]
+HEALTHCHECK --timeout=20s --interval=30s --retries=3 CMD curl -f http://localhost:5001/api/test || exit 1
+
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5001", "app:app"]
