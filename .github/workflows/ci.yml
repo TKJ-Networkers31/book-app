@@ -20,4 +20,10 @@ jobs:
         failure-threshold: error
 
     - name: coba build image
-      run: docker compose -f ./backend/docker-compose.yml up --build -d
+      env:
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        PORT_APP: ${{ secrets.PORT_APP }}
+        PORT_HOST: ${{ secrets.PORT_HOST }}
+      run: docker compose -f ./backend/docker-compose.yml up --build -d config
