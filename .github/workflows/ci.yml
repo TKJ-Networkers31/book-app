@@ -13,5 +13,11 @@ jobs:
     - name: Ambil kode dari repository (Checkout)
       uses: actions/checkout@v5
 
+    - name: Jalankan Hadolint (Lint Dockerfile)
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        dockerfile: ./backend/Dockerfile
+        failure-threshold: error
+
     - name: coba build image
       run: docker compose -f ./backend/docker-compose.yml up --build -d
