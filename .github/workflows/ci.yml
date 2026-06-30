@@ -26,4 +26,4 @@ jobs:
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         PORT_APP: ${{ secrets.PORT_APP }}
         PORT_HOST: ${{ secrets.PORT_HOST }}
-      run: docker compose -f ./backend/docker-compose.yml up --build -d config
+      run: docker compose -f ./backend/docker-compose.yml up --build -d
