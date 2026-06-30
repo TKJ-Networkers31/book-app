@@ -14,4 +14,6 @@ jobs:
       uses: actions/checkout@v4
 
     - name: coba build image
-      run: docker compose up --build -d
+      run: |
+        cd ./backend
+        docker compose up --build -d
